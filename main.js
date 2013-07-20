@@ -18,56 +18,65 @@ function drawRectangle(myRectangle, context) {
   context.stroke();
 }
 
-function animate(myRectangle, canvas, context, startTime, direction) {
-  // update
-  // time in miliseconds
-  var time = (new Date()).getTime();
-  var timeDelta = time - startTime;
-
+function draw(timeDelta) {
   var linearSpeed = 100;
   // pixels / second
 
   var offsetX = linearSpeed * (timeDelta / 1000);
-  var newX = myRectangle.x + offsetX * direction;
+  var newX = myRectangle.x + offsetX * myRectangle.direction;
 
   var maxX = canvas.width - myRectangle.width - myRectangle.borderWidth / 2;
 
-  if(direction > 0 && newX > maxX){
-    direction = -1;
+  if(myRectangle.direction > 0 && newX > maxX){
+    myRectangle.direction = -1;
   }
-  else if(direction < 0 && newX < 0){
-    direction = +1;
+  else if(myRectangle.direction < 0 && newX < 0){
+    myRectangle.direction = +1;
   }
 
-  myRectangle.x += offsetX * direction;
+  myRectangle.x += offsetX * myRectangle.direction;
 
 
   // clear
   context.clearRect(0, 0, canvas.width, canvas.height);
 
+  // draw
   drawRectangle(myRectangle, context);
-
-  // request new frame
-  requestAnimFrame(function(my_time) {
-    console.log(my_tyme);
-    animate(myRectangle, canvas, context, time, direction);
-  });
 }
-
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d');
 
 var myRectangle = {
   x: 3,
   y: 3,
   width: 100,
   height: 50,
-  borderWidth: 6
+  borderWidth: 6,
+  direction: 1
 };
 
-drawRectangle(myRectangle, context);
-// wait one second before starting animation
-setTimeout(function() {
-  var startTime = (new Date()).getTime();
-  animate(myRectangle, canvas, context, startTime, 1);
-}, 1000);
+// --------------------------------------------------
+// --------------------------------------------------
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+
+
+var lastFrameTimestamp;
+
+function animate() {
+  var currentFrameTimestamp = (new Date()).getTime();
+  var timeDelta;
+  if (lastFrameTimestamp === undefined){
+    timeDelta =  0;
+  }
+  else{
+    timeDelta = currentFrameTimestamp - lastFrameTimestamp;
+  }
+
+  lastFrameTimestamp = currentFrameTimestamp
+
+  draw( timeDelta );
+  requestAnimFrame( animate );
+}
+
+draw(0);
+setTimeout(animate, 500);
