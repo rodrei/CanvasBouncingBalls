@@ -26,7 +26,7 @@ Ball.prototype.draw = function(context) {
   context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
   context.fillStyle = this.fillColor;
   context.fill();
-  context.lineWidth = 2;
+  context.lineWidth = 1;
   context.strokeStyle = this.borderColor;
   context.stroke();
 }

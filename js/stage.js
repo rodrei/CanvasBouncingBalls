@@ -44,9 +44,8 @@ Stage = function(){
   };
 
   var updatePosition = function(object, timeDelta) {
-    var gAcceleration = 980;
+    var gAcceleration = 980; // pixels / second^2
     var maxY = Stage.canvas.height - object.radius;
-    // pixels / second^2
 
     if(object.velocity >= 0 && object.velocity < 35 && object.y > (maxY - 0.5)){
       object.y = maxY;
@@ -57,7 +56,6 @@ Stage = function(){
         0.5 * gAcceleration * Math.pow((timeDelta/1000), 2);
 
       object.velocity += gAcceleration * (timeDelta / 1000);
-
 
       if (object.y >= maxY){
         object.velocity *= -1 * object.bounceFactor();

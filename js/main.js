@@ -21,20 +21,22 @@ generateBalls = function(){
   var minDistanceBetween = 5;
   var maxRadius = 40;
   var minRadius = 5;
+  var colors = ['E53481', 'FCB215', '9CCB3B', '25B0E6', '8151A1'];
 
   var balls = []
   var offset = 0;
 
   while(true){
     var newBall = new Ball({
-      radius: Math.random() * (maxRadius - minRadius) + minRadius
+      radius: Math.random() * (maxRadius - minRadius) + minRadius,
+      fillColor: colors[Util.randomIntBetween(0, colors.length)]
     });
 
     distanceBetween = Util.randomBetween(minDistanceBetween, maxDistanceBetween);
     newBall.x = offset + distanceBetween + newBall.radius;
     newBall.y = Util.randomBetween((450 - newBall.radius), newBall.radius);
 
-    if(newBall.x > width - newBall.diameter)
+    if(newBall.x > width - newBall.radius)
       break;
 
     balls.push(newBall);
