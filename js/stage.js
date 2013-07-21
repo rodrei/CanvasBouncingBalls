@@ -41,24 +41,28 @@ Stage = function(){
   };
 
   var updatePosition = function(object, timeDelta) {
-    var gravity = 980;
+    var gAcceleration = 980;
+    var maxY = Stage.canvas.height - object.radius;
     // pixels / second^2
 
-    var offsetY = object.velocity * (timeDelta / 1000) +
-      0.5 * gravity * Math.pow((timeDelta/1000), 2);
-
-    object.y += offsetY;
-    object.velocity += gravity * (timeDelta / 1000);
-
-
-    var maxY = Stage.canvas.height - object.radius;
-    if (object.y >= maxY){
-      if(object.velocity < 5)
-        object.velocity = 0;
-      else
-        object.velocity *= -0.8;
+    if(object.velocity >= 0 && object.velocity < 35 && object.y > (maxY - 1)){
       object.y = maxY;
+      object.velocity = 0;
     }
+    else {
+      var offsetY = object.velocity * (timeDelta / 1000) +
+        0.5 * gAcceleration * Math.pow((timeDelta/1000), 2);
+
+      object.y += offsetY;
+      object.velocity += gAcceleration * (timeDelta / 1000);
+
+
+      if (object.y >= maxY){
+        object.velocity *= -1 * object.bounceFactor();
+        object.y = 2 * maxY - object.y;
+      }
+    }
+
   };
 
   var clearCanvas = function(){
