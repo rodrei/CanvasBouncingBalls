@@ -18,22 +18,30 @@ var myBall = new Ball({x: 50, y: 200});
 generateBalls = function(){
   var width = 700;
   var height = 450;
-  var distanceBetween = 30;
+
+  var maxDistanceBetween = 40;
+  var minDistanceBetween = 5;
+  var maxRadius = 40;
+  var minRadius = 5;
 
   var balls = []
   var offset = 0;
 
   while(true){
+    distanceBetween = Math.random() * (maxDistanceBetween - minDistanceBetween) + minDistanceBetween;
     var newBall = new Ball({
-      x: offset + distanceBetween + 30,
-      y: Math.random() * ((450 - 30) - 30) + 30 // * (max - min) + min
+      radius: Math.random() * (maxRadius - minRadius) + minRadius
     });
 
-    if(newBall.x > width - 30)
+    newBall.x = offset + distanceBetween + newBall.radius,
+    newBall.y = Math.random() * ((450 - newBall.radius) - newBall.radius) + newBall.radius;
+    // random * (max - min) + min
+
+    if(newBall.x > width - newBall.diameter)
       break;
 
     balls.push(newBall);
-    offset += distanceBetween + 60;
+    offset += distanceBetween + newBall.diameter;
   }
 
   return balls;

@@ -1,22 +1,33 @@
 var Ball = function(options)
 {
-  this.x = options['x'];
-  this.y = options['y'];
-  this.radius = 30;
-  this.diameter = this.radius * 2;
-  this.color = 'green';
-  this.velocity = 0;
-  this.maxBounceFactor = 0.8;
+  var options = (options === undefined) ? {} : options;
+  var defaults = {
+    x: 0,
+    y: 0,
+    radius: 30,
+    fillColor: 'green',
+    borderColor: '#003300',
+    velocity: 0,
+    maxBounceFactor: 0.8
+  };
+
+  this.x =               options['x'] || defaults['x'];
+  this.y =               options['y'] || defaults['y'];
+  this.radius =          options['radius'] || defaults['radius'];
+  this.fillColor =       options['fillColor'] || defaults['fillColor'];
+  this.maxBounceFactor = options['maxBounceFactor'] || defaults['maxBounceFactor'];
+  this.velocity =        0;
+  this.diameter =        this.radius * 2;
 };
 
 
 Ball.prototype.draw = function(context) {
   context.beginPath();
   context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-  context.fillStyle = 'green';
+  context.fillStyle = this.fillColor;
   context.fill();
   context.lineWidth = 2;
-  context.strokeStyle = '#003300';
+  context.strokeStyle = this.borderColor;
   context.stroke();
 }
 
