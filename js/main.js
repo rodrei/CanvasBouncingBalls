@@ -14,7 +14,11 @@ window.requestAnimFrame = (function(callback) {
 
 var myBall = new Ball({x: 50, y: 50});
 
-Stage.init({canvasId: 'canvas'});
-setTimeout(Stage.animate(), 500);
+Stage.init({
+  canvasId: 'canvas',
+  objects: [myBall]
+});
+
+setTimeout(Stage.animate(), 300);
 
 
