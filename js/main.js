@@ -8,56 +8,41 @@ window.requestAnimFrame = (function(callback) {
   };
 })();
 
-function drawRectangle(myRectangle, context) {
-  context.beginPath();
-  context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
-  context.fillStyle = 'black';
-  context.fill();
-  context.lineWidth = myRectangle.borderWidth;
-  context.strokeStyle = 'blue';
-  context.stroke();
-}
-
 function draw(timeDelta) {
-  var linearSpeed = 100;
-  // pixels / second
+  var gravity = 980;
+  // pixels / second^2
 
-  var offsetX = linearSpeed * (timeDelta / 1000);
-  var newX = myRectangle.x + offsetX * myRectangle.direction;
+  var offsetY = myBall.velocity * (timeDelta / 1000) +
+    0.5 * gravity * Math.pow((timeDelta/1000), 2);
 
-  var maxX = canvas.width - myRectangle.width - myRectangle.borderWidth / 2;
+  myBall.y += offsetY;
+  myBall.velocity += gravity * (timeDelta / 1000);
 
-  if(myRectangle.direction > 0 && newX > maxX){
-    myRectangle.direction = -1;
+
+  var maxY = canvas.height - myBall.radius;
+  if (myBall.y >= maxY){
+    if(myBall.velocity < 5)
+      myBall.velocity = 0;
+    else
+      myBall.velocity *= -0.8;
+    myBall.y = maxY;
   }
-  else if(myRectangle.direction < 0 && newX < 0){
-    myRectangle.direction = +1;
-  }
 
-  myRectangle.x += offsetX * myRectangle.direction;
-
+  console.log(myBall.velocity);
 
   // clear
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   // draw
-  drawRectangle(myRectangle, context);
+  myBall.draw(context);
 }
-
-var myRectangle = {
-  x: 3,
-  y: 3,
-  width: 100,
-  height: 50,
-  borderWidth: 6,
-  direction: 1
-};
 
 // --------------------------------------------------
 // --------------------------------------------------
 
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
+var myBall = new Ball({x: 50, y: 50});
 
 
 var lastFrameTimestamp;
@@ -80,3 +65,4 @@ function animate() {
 
 draw(0);
 setTimeout(animate, 500);
+
