@@ -3,6 +3,7 @@ var Ball = function(options)
   this.x = options['x'];
   this.y = options['y'];
   this.radius = 30;
+  this.diameter = this.radius * 2;
   this.color = 'green';
   this.velocity = 0;
   this.maxBounceFactor = 0.8;

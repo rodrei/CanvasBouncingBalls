@@ -15,9 +15,33 @@ window.requestAnimFrame = (function(callback) {
 
 var myBall = new Ball({x: 50, y: 200});
 
+generateBalls = function(){
+  var width = 700;
+  var height = 450;
+  var distanceBetween = 30;
+
+  var balls = []
+  var offset = 0;
+
+  while(true){
+    var newBall = new Ball({
+      x: offset + distanceBetween + 30,
+      y: Math.random() * ((450 - 30) - 30) + 30 // * (max - min) + min
+    });
+
+    if(newBall.x > width - 30)
+      break;
+
+    balls.push(newBall);
+    offset += distanceBetween + 60;
+  }
+
+  return balls;
+};
+
 Stage.init({
   canvasId: 'canvas',
-  objects: [myBall]
+  objects: generateBalls()
 });
 
 setTimeout(Stage.animate(), 300);

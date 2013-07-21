@@ -29,6 +29,7 @@ Stage = function(){
 
 
   var draw = function(timeDelta) {
+
     for (var i = 0; i < Stage.objects.length; i++) {
       updatePosition(Stage.objects[i], timeDelta);
     }
@@ -37,7 +38,9 @@ Stage = function(){
     clearCanvas();
 
     // draw
-    myBall.draw(Stage.context);
+    for (var i = 0; i < Stage.objects.length; i++) {
+      Stage.objects[i].draw(Stage.context);
+    }
   };
 
   var updatePosition = function(object, timeDelta) {
