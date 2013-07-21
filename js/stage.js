@@ -48,15 +48,14 @@ Stage = function(){
     var maxY = Stage.canvas.height - object.radius;
     // pixels / second^2
 
-    if(object.velocity >= 0 && object.velocity < 35 && object.y > (maxY - 1)){
+    if(object.velocity >= 0 && object.velocity < 35 && object.y > (maxY - 0.5)){
       object.y = maxY;
       object.velocity = 0;
     }
     else {
-      var offsetY = object.velocity * (timeDelta / 1000) +
+      object.y += object.velocity * (timeDelta / 1000) +
         0.5 * gAcceleration * Math.pow((timeDelta/1000), 2);
 
-      object.y += offsetY;
       object.velocity += gAcceleration * (timeDelta / 1000);
 
 

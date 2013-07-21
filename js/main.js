@@ -13,8 +13,6 @@ window.requestAnimFrame = (function(callback) {
 // --------------------------------------------------
 // --------------------------------------------------
 
-var myBall = new Ball({x: 50, y: 200});
-
 generateBalls = function(){
   var width = 700;
   var height = 450;
@@ -28,14 +26,13 @@ generateBalls = function(){
   var offset = 0;
 
   while(true){
-    distanceBetween = Math.random() * (maxDistanceBetween - minDistanceBetween) + minDistanceBetween;
     var newBall = new Ball({
       radius: Math.random() * (maxRadius - minRadius) + minRadius
     });
 
-    newBall.x = offset + distanceBetween + newBall.radius,
-    newBall.y = Math.random() * ((450 - newBall.radius) - newBall.radius) + newBall.radius;
-    // random * (max - min) + min
+    distanceBetween = Util.randomBetween(minDistanceBetween, maxDistanceBetween);
+    newBall.x = offset + distanceBetween + newBall.radius;
+    newBall.y = Util.randomBetween((450 - newBall.radius), newBall.radius);
 
     if(newBall.x > width - newBall.diameter)
       break;
