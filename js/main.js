@@ -13,9 +13,10 @@ window.requestAnimFrame = (function(callback) {
 // --------------------------------------------------
 // --------------------------------------------------
 
-generateBalls = function(){
-  var width = 700;
-  var height = 450;
+generateBalls = function(options){
+  options = options || {};
+  var width = options['width'] || 700;
+  var height = options['height'] || 450;
 
   var maxDistanceBetween = 40;
   var minDistanceBetween = 5;
@@ -34,7 +35,10 @@ generateBalls = function(){
 
     distanceBetween = Util.randomBetween(minDistanceBetween, maxDistanceBetween);
     newBall.x = offset + distanceBetween + newBall.radius;
-    newBall.y = Util.randomBetween((450 - newBall.radius), newBall.radius);
+    newBall.y = Util.randomBetween((height - newBall.radius), newBall.radius);
+    if(options['maxBounceFactor'] !== undefined){
+      newBall.maxBounceFactor = options['maxBounceFactor']
+    }
 
     if(newBall.x > width - newBall.radius)
       break;
@@ -46,11 +50,59 @@ generateBalls = function(){
   return balls;
 };
 
-Stage.init({
-  canvasId: 'canvas',
-  objects: generateBalls()
-});
+window.onload = function() {
+  var generateOptions = {};
+  var canvas = document.getElementById('canvas');
 
-setTimeout(Stage.animate(), 300);
+  //Set size of canvas according to screen
+  var canvasWrapper = document.getElementById('canvas_wrapper');
+  canvas.width  = canvasWrapper.offsetWidth;
+  canvas.height = $(window).height() - 40;
+
+  generateOptions['width'] = canvas.width;
+  generateOptions['height'] = canvas.height;
+
+  //--------------------------------------------------
+  //Animation
+  //--------------------------------------------------
+
+  Stage.init({
+    canvas: canvas,
+    objects: generateBalls(generateOptions)
+  });
+  setTimeout(Stage.animate(), 300);
+
+  $('#reset_button').click(function() {
+    Stage.objects = generateBalls(generateOptions);
+    Stage.objects.first
+  });
+
+  //--------------------------------------------------
+  //Sliders
+  //--------------------------------------------------
+  $('#gravity_slider').slider({
+    change: function(event, ui){
+      Stage.gravity = ui.value;
+    },
+    value: 980,
+    max: 3000,
+    min: 700
+  });
+
+  $('#bounciness_slider').slider({
+    change: function(event, ui){
+      generateOptions['maxBounceFactor'] = ui.value / 100;
+      for (var i = 0; i < Stage.objects.length; i++) {
+        Stage.objects[i].maxBounceFactor = ui.value / 100;
+      }
+    },
+    value: 80,
+    max: 98,
+    min: 10
+  });
+};
+
+
+
 
 

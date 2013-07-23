@@ -32,7 +32,7 @@ Ball.prototype.draw = function(context) {
 }
 
 Ball.prototype.bounceFactor = function() {
-  var velocityThres = 150;
+  var velocityThres = Stage.gravity * 150 / 980;
   var ret;
   if(Math.abs(this.velocity) > velocityThres){
     ret = this.maxBounceFactor;

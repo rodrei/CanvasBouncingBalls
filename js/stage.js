@@ -4,9 +4,12 @@ Stage = function(){
   var lastFrameTimestamp;
   var objects = [];
 
+  //World
+  var gravity = 980;
+
   var init = function(options){
     Stage.objects = options['objects'];
-    Stage.canvas = document.getElementById(options['canvasId']);
+    Stage.canvas =  options['canvas'];
     Stage.context = Stage.canvas.getContext('2d');
   };
 
@@ -29,7 +32,6 @@ Stage = function(){
 
 
   var draw = function(timeDelta) {
-
     for (var i = 0; i < Stage.objects.length; i++) {
       updatePosition(Stage.objects[i], timeDelta);
     }
@@ -44,18 +46,18 @@ Stage = function(){
   };
 
   var updatePosition = function(object, timeDelta) {
-    var gAcceleration = 980; // pixels / second^2
     var maxY = Stage.canvas.height - object.radius;
+    var gravity = Stage.gravity;
 
-    if(object.velocity >= 0 && object.velocity < 35 && object.y > (maxY - 0.5)){
+    if(object.velocity >= 0 && object.velocity < 35 && object.y > (maxY - 1)){
       object.y = maxY;
       object.velocity = 0;
     }
     else {
       object.y += object.velocity * (timeDelta / 1000) +
-        0.5 * gAcceleration * Math.pow((timeDelta/1000), 2);
+        0.5 * gravity * Math.pow((timeDelta/1000), 2);
 
-      object.velocity += gAcceleration * (timeDelta / 1000);
+      object.velocity += gravity * (timeDelta / 1000);
 
       if (object.y >= maxY){
         object.velocity *= -1 * object.bounceFactor();
@@ -73,7 +75,8 @@ Stage = function(){
   return {
     animate: animate,
     init: init,
-    context: context
+    context: context,
+    gravity: gravity
   };
 
 }();
