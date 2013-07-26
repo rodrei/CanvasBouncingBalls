@@ -50,14 +50,13 @@ generateBalls = function(options){
   return balls;
 };
 
-window.onload = function() {
+$(document).ready( function() {
   var generateOptions = {};
   var canvas = document.getElementById('canvas');
 
   //Set size of canvas according to screen
-  var canvasWrapper = document.getElementById('canvas_wrapper');
-  canvas.width  = canvasWrapper.offsetWidth;
-  canvas.height = $(window).height() - 40;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight - 41;
 
   generateOptions['width'] = canvas.width;
   generateOptions['height'] = canvas.height;
@@ -100,7 +99,7 @@ window.onload = function() {
     max: 98,
     min: 10
   });
-};
+});
 
 
 

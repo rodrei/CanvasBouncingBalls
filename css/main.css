@@ -1,8 +1,14 @@
+html, body {
+  height: 100% !important;
+}
+
 #header a.brand {
   padding-left: 40px;
 }
 
 canvas {
+  position: absolute;
+  z-index: -100;
 }
 
 #content {
