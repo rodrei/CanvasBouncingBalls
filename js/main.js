@@ -39,7 +39,7 @@ var App = function(){
       },
       value: 980,
       max: 3000,
-      min: 700
+      min: 200
     });
 
     $('#bounciness_slider').slider({
