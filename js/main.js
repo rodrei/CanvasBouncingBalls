@@ -1,22 +1,27 @@
 window.requestAnimFrame = (function(callback) {
-  //Debugging: Lower framerate to 3 frames p/sec
-  //return function(callback) {
-  //  window.setTimeout(callback, 1000 / 3);
-  //};
   return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
     function(callback) {
     window.setTimeout(callback, 1000 / 60);
   };
 })();
 
-
-// --------------------------------------------------
-// --------------------------------------------------
+var App = function(){
+  var canvas;
+  var init = function(){
+    App.canvas = document.getElementById('canvas');
+    App.canvas.width = window.innerWidth;
+    App.canvas.height = window.innerHeight - 41;
+  }
+  return {
+    canvas: canvas,
+    init: init
+  }
+}();
 
 generateBalls = function(options){
   options = options || {};
-  var width = options['width'] || 700;
-  var height = options['height'] || 450;
+  var width =  App.canvas.width;
+  var height = App.canvas.height;
 
   var maxDistanceBetween = 40;
   var minDistanceBetween = 5;
@@ -50,25 +55,19 @@ generateBalls = function(options){
   return balls;
 };
 
+
 $(document).ready( function() {
+  App.init();
   var generateOptions = {};
-  var canvas = document.getElementById('canvas');
-
-  //Set size of canvas according to screen
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - 41;
-
-  generateOptions['width'] = canvas.width;
-  generateOptions['height'] = canvas.height;
-
   //--------------------------------------------------
   //Animation
   //--------------------------------------------------
 
   Stage.init({
     canvas: canvas,
-    objects: generateBalls(generateOptions)
+    objects: generateBalls()
   });
+
   setTimeout(Stage.animate(), 300);
 
   $('#reset_button').click(function() {
