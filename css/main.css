@@ -26,12 +26,12 @@ p.reset_button {
   margin-top: 3em;
 }
 
-
-
-#col-left {
+#signature {
+  line-height: 41px;
+  margin: 0;
+  text-align: center;
+  width: 90px;
 }
 
-#col-right {
-}
 
 
